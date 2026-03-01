@@ -1,32 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Bíblico 8-Bit</title>
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='quiz.css') }}">
+    <title>Quiz Bíblico</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='biblia.css') }}">
 </head>
 <body>
-    <div id="game-container">
-        <div id="header">
-            <span id="categoria">Categoria: ---</span>
-            <span id="placar">Pontos: 0</span>
-        </div>
 
-        <div id="quiz-box">
-            <h1 id="pergunta">Carregando perguntas...</h1>
-            <div id="opcoes" class="options-grid">
-                </div>
-        </div>
+<div id="game-container">
 
-        <div id="footer">
-            <span id="progresso">Pergunta 1 de 40</span>
-        </div>
+    <div id="header">
+        <div id="categoria"></div>
+        <div id="progresso"></div>
+        <div id="placar">Pontos: 0</div>
     </div>
 
-    <script src="{{ url_for('static',
-    filename='quiz.js') }}"></script>
+    <div id="quiz-box">
+        <h2 id="pergunta"></h2>
+        <div id="opcoes" class="options-grid"></div>
+    </div>
+
+    <div id="footer">
+        Quiz Bíblico 🎮
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='biblia.js') }}"></script>
+
 </body>
 </html>

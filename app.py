@@ -1,11 +1,11 @@
 from flask import Flask, render_template, jsonify, request
+import os
 
-# Inicialização global para que o Gunicorn/Render encontre o app
 app = Flask(__name__)
 
-# Banco de dados completo com as 40 perguntas organizadas
 perguntas = [
-    # Antigo Testamento
+
+    # ================= ANTIGO TESTAMENTO =================
     {"cat": "Antigo Testamento", "p": "Quem construiu a arca?", "o": ["Moisés", "Noé", "Abraão", "Davi"], "r": "Noé"},
     {"cat": "Antigo Testamento", "p": "Qual o primeiro livro da Bíblia?", "o": ["Êxodo", "Salmos", "Gênesis", "Levítico"], "r": "Gênesis"},
     {"cat": "Antigo Testamento", "p": "Quem foi jogado na cova dos leões?", "o": ["Daniel", "José", "Elias", "Isaías"], "r": "Daniel"},
@@ -16,7 +16,8 @@ perguntas = [
     {"cat": "Antigo Testamento", "p": "Quantas pragas caíram no Egito?", "o": ["7", "12", "10", "3"], "r": "10"},
     {"cat": "Antigo Testamento", "p": "Quem foi vendido pelos irmãos?", "o": ["Benjamim", "José", "Isaque", "Jacó"], "r": "José"},
     {"cat": "Antigo Testamento", "p": "Quem era o homem mais forte da Bíblia?", "o": ["Sansão", "Saul", "Golias", "Davi"], "r": "Sansão"},
-    # Novo Testamento
+
+    # ================= NOVO TESTAMENTO =================
     {"cat": "Novo Testamento", "p": "Onde Jesus nasceu?", "o": ["Nazaré", "Belém", "Jerusalém", "Emaús"], "r": "Belém"},
     {"cat": "Novo Testamento", "p": "Qual discípulo negou Jesus 3 vezes?", "o": ["Judas", "João", "Pedro", "Tomé"], "r": "Pedro"},
     {"cat": "Novo Testamento", "p": "Qual o último livro da Bíblia?", "o": ["Judas", "Apocalipse", "Atos", "Hebreus"], "r": "Apocalipse"},
@@ -27,13 +28,15 @@ perguntas = [
     {"cat": "Novo Testamento", "p": "Qual o primeiro milagre de Jesus?", "o": ["Andar na água", "Cura de cego", "Bodas de Caná", "Multiplicação"], "r": "Bodas de Caná"},
     {"cat": "Novo Testamento", "p": "Quem era o cobrador de impostos?", "o": ["Mateus", "Lucas", "Tiago", "João"], "r": "Mateus"},
     {"cat": "Novo Testamento", "p": "Quem subiu em uma árvore para ver Jesus?", "o": ["Lázaro", "Zaqueu", "Bartimeu", "Nicodemos"], "r": "Zaqueu"},
-    # Sacramentos
+
+    # ================= SACRAMENTOS =================
     {"cat": "Sacramentos", "p": "Qual o primeiro sacramento?", "o": ["Eucaristia", "Batismo", "Crisma", "Confissão"], "r": "Batismo"},
     {"cat": "Sacramentos", "p": "Qual sacramento perdoa os pecados?", "o": ["Ordem", "Unção", "Penitência", "Batismo"], "r": "Penitência"},
     {"cat": "Sacramentos", "p": "O Matrimônio é um sacramento de quê?", "o": ["Iniciação", "Cura", "Serviço", "Penitência"], "r": "Serviço"},
     {"cat": "Sacramentos", "p": "Qual sacramento confirma o Batismo?", "o": ["Eucaristia", "Crisma", "Ordem", "Missa"], "r": "Crisma"},
     {"cat": "Sacramentos", "p": "Quantos são os sacramentos?", "o": ["3", "5", "7", "10"], "r": "7"},
-    # Santos
+
+    # ================= SANTOS =================
     {"cat": "Santos", "p": "Quem é o Santo das causas impossíveis?", "o": ["Sto Expedito", "Sto Antônio", "S. Judas Tadeu", "S. Bento"], "r": "S. Judas Tadeu"},
     {"cat": "Santos", "p": "Quem escreveu a Suma Teológica?", "o": ["S. Agostinho", "Sto Tomás de Aquino", "S. Bento", "S. Francisco"], "r": "Sto Tomás de Aquino"},
     {"cat": "Santos", "p": "Quem fundou a Ordem dos Franciscanos?", "o": ["S. Domingos", "S. Francisco de Assis", "S. Bruno", "S. Bento"], "r": "S. Francisco de Assis"},
@@ -44,12 +47,13 @@ perguntas = [
     {"cat": "Santos", "p": "Qual santo lutou contra um dragão?", "o": ["S. Miguel", "S. Jorge", "S. Sebastião", "S. Expedito"], "r": "S. Jorge"},
     {"cat": "Santos", "p": "Quem é o Santo casamenteiro?", "o": ["S. José", "Sto Antônio", "S. Valentim", "S. Pedro"], "r": "Sto Antônio"},
     {"cat": "Santos", "p": "Quem é o padroeiro dos animais?", "o": ["S. Roque", "S. Francisco de Assis", "S. Lázaro", "S. João"], "r": "S. Francisco de Assis"},
-    # Missa
+
+    # ================= MISSA =================
     {"cat": "Missa", "p": "Qual a primeira parte da Missa?", "o": ["Eucarística", "Ritos Iniciais", "Liturgia da Palavra", "Ofertório"], "r": "Ritos Iniciais"},
-    {"cat": "Missa", "p": "Onde fica guardada a Eucaristia?", "o": ["Altar", "Sacrário", "Ambol", "Pia"], "r": "Sacrário"},
+    {"cat": "Missa", "p": "Onde fica guardada a Eucaristia?", "o": ["Altar", "Sacrário", "Ambão", "Pia"], "r": "Sacrário"},
     {"cat": "Missa", "p": "Quando o pão vira Corpo de Cristo?", "o": ["Ofertório", "Consagração", "Comunhão", "Pai Nosso"], "r": "Consagração"},
     {"cat": "Missa", "p": "Livro que contém as leituras da Missa?", "o": ["Bíblia", "Missal", "Lecionário", "Catecismo"], "r": "Lecionário"},
-    {"cat": "Missa", "p": "O que significa a palavra Eucaristia?", "o": ["Sacrifício", "Ação de Graças", "Comunhão", "Ceia"], "r": "Ação de Graças"}
+    {"cat": "Missa", "p": "O que significa a palavra Eucaristia?", "o": ["Sacrifício", "Ação de Graças", "Comunhão", "Ceia"], "r": "Ação de Graças"},
 ]
 
 pontos = 0
@@ -68,8 +72,11 @@ def proxima_pergunta():
     if pergunta_atual_index < len(perguntas):
         p = perguntas[pergunta_atual_index]
         return jsonify({
-            "pergunta": p["p"], "opcoes": p["o"], "cat": p["cat"],
-            "index": pergunta_atual_index + 1, "total": len(perguntas)
+            "pergunta": p["p"],
+            "opcoes": p["o"],
+            "cat": p["cat"],
+            "index": pergunta_atual_index + 1,
+            "total": len(perguntas)
         })
     return jsonify({"finalizado": True, "pontos": pontos})
 
@@ -83,4 +90,5 @@ def verificar_resposta():
     return jsonify({"pontos_atuais": pontos})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)

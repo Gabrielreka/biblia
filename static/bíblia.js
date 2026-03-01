@@ -7,13 +7,12 @@ async function carregarPergunta() {
         return;
     }
 
-    // Atualiza a tela
     document.getElementById('pergunta').innerText = data.pergunta;
     document.getElementById('categoria').innerText = `Categoria: ${data.cat}`;
     document.getElementById('progresso').innerText = `Pergunta ${data.index} de ${data.total}`;
 
     const containerOpcoes = document.getElementById('opcoes');
-    containerOpcoes.innerHTML = ''; // Limpa botões antigos
+    containerOpcoes.innerHTML = '';
 
     data.opcoes.forEach(opcao => {
         const btn = document.createElement('button');
@@ -31,10 +30,10 @@ async function enviarResposta(escolha) {
     });
 
     const result = await response.json();
+
     document.getElementById('placar').innerText = `Pontos: ${result.pontos_atuais}`;
 
-    // Pequena pausa para o jogador ver que clicou e carregar a próxima
-    setTimeout(carregarPergunta, 300);
+    setTimeout(carregarPergunta, 500);
 }
 
 function exibirFimDeJogo(total) {
@@ -45,5 +44,4 @@ function exibirFimDeJogo(total) {
     `;
 }
 
-// Inicia o jogo ao carregar a página
-carregarPergunta();
+window.onload = carregarPergunta;
