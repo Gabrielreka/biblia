@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Bíblico 8-Bit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
+</head>
+<body>
+    <div id="game-container">
+        <div id="header">
+            <span id="categoria">Categoria: ---</span>
+            <span id="placar">Pontos: 0</span>
+        </div>
+
+        <div id="quiz-box">
+            <h1 id="pergunta">Carregando perguntas...</h1>
+            <div id="opcoes" class="options-grid">
+                </div>
+        </div>
+
+        <div id="footer">
+            <span id="progresso">Pergunta 1 de 40</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='quiz.js') }}"></script>
+</body>
+</html>
